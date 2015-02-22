@@ -7,7 +7,8 @@ import json
 import copy
 from datetime import datetime, timedelta
 from bson.json_util import dumps
-from bson.timestamp import Timestamp
+from app import jinja_filters
+import pymongo
 
 stats = Blueprint('tasks', __name__, template_folder='templates')
 
@@ -15,13 +16,12 @@ stats = Blueprint('tasks', __name__, template_folder='templates')
 class StatView(MethodView):
 
     def get(self):
-        ans = mongo_db_collection.find({"meta": "stepicStudioVideoObj"})
+        ans = mongo_db_collection.find({"meta": "stepicStudioVideoObj"}).sort("data.Time", pymongo.DESCENDING)
         size = ans.count()
         to_dump = copy.copy(ans)
         print(size)
         data_arr = [a['data'] for a in json.loads(dumps(to_dump))]
         print(data_arr)
-        dt = datetime.now()
         for timeObj in data_arr:
             try:
                 time_in_db = int(timedelta(seconds=int(timeObj['Time']['$date'])).total_seconds())
@@ -37,9 +37,6 @@ class SendPostRequest(MethodView):
 
     def get(self):
         payload = {'key1': 'value1', 'key2': 'value2'}
-
-        # r = requests.post("http://httpbin.org/post", data=payload)
-        # print(r)
         r = requests.post("http://127.0.0.1:5000/newVideo", data=payload)
         return redirect('/')
 
@@ -55,7 +52,6 @@ class AddNewStat(MethodView):
             try:
                 username = data_dict['User']
                 stepName = data_dict['Name']
-                Time = data_dict['Time']
                 Duration = data_dict['Duration']
                 priority = int(data_dict['priority'])
                 status = int(data_dict['status'])
@@ -69,6 +65,7 @@ class AddNewStat(MethodView):
             except Exception as e:
                 print('ERROR! Raised ', e)
                 return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
     def get(self):
         resp = make_response('{"Status": "ok"}')
         resp.headers['Content-Type'] = "application/json"
@@ -76,4 +73,11 @@ class AddNewStat(MethodView):
 
 stats.add_url_rule('/', view_func=StatView.as_view("list"))
 stats.add_url_rule('/newVideo', methods=('GET', 'POST'), view_func=AddNewStat.as_view("addNew"))
-stats.add_url_rule('/sendData', view_func=SendPostRequest.as_view("sendPostRequest"))
+
+@app.template_filter('datetime')
+def filter_datetime(time_dict):
+    return jinja_filters.format_datetime(int(time_dict['$date']/1000))
+
+@app.template_filter('status_info')
+def status_info_filter(status):
+    return jinja_filters.status_info(status)
