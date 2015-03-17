@@ -14,9 +14,10 @@ lm.login_view = 'login'
 # oid = OpenID(app, os.path.join(basedir, 'tmp'))
 app.config["SECRET_KEY"] = SECRET_KEY
 
-client = MongoClient()
-connection = Connection(mongoDB_ip, mongoDB_port)
-db = connection.Tetrix_log
+uri = "mongodb://" + mongoDB_user + ":" + mongoDB_pass + mongoDB_ip + ':' + str(mongoDB_port)
+client = MongoClient(mongoDB_ip + ':' + str(mongoDB_port))
+client.admin.authenticate(mongoDB_user, mongoDB_pass)
+db = client.stepic
 
 def mongo_db_connection():
     return db[mongoDB_collection]
