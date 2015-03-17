@@ -1,11 +1,19 @@
 $font-stack:    Helvetica, sans-serif
-$primary-color: #333
+$notdone-color: #000000
+$done-color: #FFF
+$done-bg-color: #a1dd89
+$notdone-bg-color: #dd787d
 
 body
   font: 100% $font-stack
-  color: $primary-color
 
-.list-actions-menu
+.not-done
+  background: $notdone-bg-color
+  color: $notdone-color
 
 .hidden
   visibility: hidden
+
+.is-done
+  background: $done-bg-color
+  color: $done-color

@@ -3,27 +3,7 @@
 {% block content %}
     <div class="list-group">
         {% for item in data %}
-                <h3><div class="list-group-item list-group-item-info" >
-                        <div class="list-element-top-block ">
-                            <span style="width: 100px; display: inline-block;"> {{item['User']}} </span>
-                            | {{item['Name']}} , Duration: {{item['Duration']}} sec ,at {{item['Time'] | datetime}}
-                            | {{item['status'] | status_info}}
-                        </div>
-                        <div class="list-actions-menu hidden">
-                            <hr class="divider">
-                            <span>Change status:</span>
-                            <div class="btn-group">
-                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                {{item['status'] | status_info}} <span class="caret"></span>
-                              </button>
-                              <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">No</a></li>
-                                <li><a href="#">DONE</a></li>
-                              </ul>
-                            </div>
-                        </div>
-                    </div>
-                </h3>
+                       {% block list_element scoped %} {% endblock %}
         {% endfor %}
     </div>
 {% endblock %}

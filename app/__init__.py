@@ -1,16 +1,30 @@
 from flask import Flask
+import os
 from pymongo import Connection, MongoClient
-from config import mongoDB_ip, mongoDB_pass, mongoDB_user, mongoDB_port, mongoDB_collection
-
+from config import mongoDB_ip, mongoDB_pass, mongoDB_user, mongoDB_port, mongoDB_collection, mongoDB_usersDB
+from flask.ext.login import LoginManager
+# from flask.ext.openid import OpenID
+from config import basedir, SECRET_KEY
 
 app = Flask(__name__)
+lm = LoginManager()
+lm.init_app(app)
+# lm.user_loader(load_user)
+lm.login_view = 'login'
+# oid = OpenID(app, os.path.join(basedir, 'tmp'))
+app.config["SECRET_KEY"] = SECRET_KEY
+
+client = MongoClient()
+connection = Connection(mongoDB_ip, mongoDB_port)
+db = connection.Tetrix_log
 
 def mongo_db_connection():
-    client = MongoClient()
-    connection = Connection(mongoDB_ip, mongoDB_port)
-    db = connection.Tetrix_log
     return db[mongoDB_collection]
 
+def mongo_db_userData():
+    return db[mongoDB_usersDB]
+
+mongo_db_users = mongo_db_userData()
 mongo_db_collection = mongo_db_connection()
 
 def register_blueprints(app):
