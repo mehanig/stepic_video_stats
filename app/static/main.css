@@ -1,0 +1,15 @@
+body {
+  font: 100% Helvetica, sans-serif; }
+
+.not-done {
+  background: #dd787d;
+  color: #000000; }
+
+.hidden {
+  visibility: hidden; }
+
+.is-done {
+  background: #a1dd89;
+  color: #FFF; }
+
+/*# sourceMappingURL=main.css.map */

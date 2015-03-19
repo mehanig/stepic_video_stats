@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Stepic.org statistics</title>
+      <link href="/static/external_code/bootstrap.min.css" rel="stylesheet">
+      <link href="/static/main.css" rel="stylesheet">
+      <script src="/static/external_code/jquery.min.js"></script>
+      <script src="/static/external_code/bootstrap.min.js"></script>
+      <script src="/static/main.js"></script>
+
+    <style>.content {padding-top: 80px;}</style>
+  </head>
+
+  <body>
+
+    {%- block topbar -%}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <h2>
+              <a href="/" class="brand">Stepic Studio Recordings</a> <small>Open Data from Stepic.org</small>
+          </h2>
+            {% if not g.user.is_anonymous() %}
+            <p>User: {{g.user}} <span><a href="/logout">Logout</a> </span></p>
+            {% endif %}
+        </div>
+        <div class="navbar-collapse">
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+    {%- endblock -%}
+
+    <div class="container">
+      <div class="content">
+          {% block page_header %}{% endblock %}
+          {% block content %}{% endblock %}
+      </div>
+    </div>
+    {% block js_footer %}{% endblock %}
+  </body>
+</html>

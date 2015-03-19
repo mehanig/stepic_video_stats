@@ -1,0 +1,5 @@
+#!/bin/bash
+
+/home/mehanig/webapps/stepic/apache2/bin/stop
+sleep 5
+/home/mehanig/webapps/stepic/apache2/bin/start
