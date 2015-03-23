@@ -17,7 +17,9 @@ app.config["SECRET_KEY"] = SECRET_KEY
 uri = "mongodb://" + mongoDB_user + ":" + mongoDB_pass + mongoDB_ip + ':' + str(mongoDB_port)
 client = MongoClient(mongoDB_ip + ':' + str(mongoDB_port))
 client.admin.authenticate(mongoDB_user, mongoDB_pass)
-db = client.stepic
+# db = client.stepic
+db = client.Tetrix_log
+
 
 def mongo_db_connection():
     return db[mongoDB_collection]

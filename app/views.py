@@ -58,10 +58,8 @@ def before_request():
 class AddNewStat(MethodView):
 
     def post(self):
-            data_dict = request.data
-            print(type(request.data))
-            print(data_dict)
-            data_dict = json.loads(data_dict.decode("utf-8"))
+            data_dict = request.form
+            print(type(request.form))
             print(data_dict)
             try:
                 username = data_dict['User']
