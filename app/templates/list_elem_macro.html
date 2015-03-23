@@ -1,33 +1,45 @@
-{% macro lelem(item) -%}
+{% macro lelem(item, UserName, UserNameAbove) -%}
+
+                {%- set HideIfSameUser = ""  -%}
+                {%- if UserName  == UserNameAbove -%}
+                    {%- set HideIfSameUser = " same-user-list-element hide-list-element " -%}
+                {% endif %}
+                <div class= "userRecord {{ HideIfSameUser }}" data-user="{{UserName}}" >
                 <h3>
                     {%- if item["status"] == "1" -%}
                     {%- set main_div_class = "is-done" -%}
                     {% else %}
                     {%- set main_div_class = "not-done" -%}
                     {% endif %}
+
                     <div class= "{{ main_div_class }} list-group-item list-group-item-info">
                         <div class="list-element-top-block">
-                            <span style="width: 100px; display: inline-block;"> {{item['User']}} </span>
+                            <span class = "list-element-top-block-span" > {{item['User']}} </span>
                             | {{item['Name']}} , Duration: {{item['Duration']}} sec ,at {{item['Time'] | datetime}}
                             | <span class="video-status"> {{item['status'] | status_info}} </span>
                         </div>
                         {% if not g.user.is_anonymous() %}
-                        <div class="list-actions-menu hidden">
+                        <div class="list-actions-menu hidden" id={{item['Name']}}>
                             <hr class="divider">
                             <span>Change status:</span>
                             <div class="btn-group">
                               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                 {{item['status'] | status_info}} <span class="caret"></span>
                               </button>
-                              <ul class="dropdown-menu" role="menu" id={{item['Name']}}>
+                              <ul class="dropdown-menu" role="menu" >
                                 <li><a class="set-no-status" href="#">No</a></li>
                                 <li><a class="set-yes-status" href="#">DONE</a></li>
                               </ul>
                             </div>
+                            {%- if main_div_class == "is-done" -%}
+                                <button type="button" class="btn-default show-same-user-vids" data-user="{{UserName}}">Show hidden</button>
+                            {% endif %}
+                            <button type="button" class="btn-default delete-record"> Delete</button>
                         </div>
                         {% endif %}
                     </div>
                 </h3>
+                    </div>
 
 
 {%- endmacro %}
