@@ -2,8 +2,12 @@
 
 {% block content %}
     <div class="list-group">
+        {%- set UserName = "" -%}
+        {%- set UserNameAbove = "" -%}
         {% for item in data %}
-                       {% block list_element scoped %} {% endblock %}
+                {%- set UserName = item['User'] -%}
+                {% block list_element scoped %} {% endblock %}
+                {%- set UserNameAbove = item['User'] -%}
         {% endfor %}
     </div>
 {% endblock %}
