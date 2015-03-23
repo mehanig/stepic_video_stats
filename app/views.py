@@ -16,6 +16,7 @@ from app.forms import LoginForm2Fields
 from app.models import User
 from flask import jsonify
 from .crypto import AESCipher, isPassword, getDigest
+from .db_operations import delete_entry_by_name
 # from config import OPENID_PROVIDERS
 
 stats = Blueprint('tasks', __name__, template_folder='templates')
@@ -131,15 +132,29 @@ def logout():
 @app.route("/update", methods=['POST'])
 def update():
     update_list = [value for key, value in request.form.items() if key == 'name']
-    update_action = [value for key, value in request.form.items() if key == 'is_update']
-    print("ALL DATA :", update_action)
+    is_update = [value for key, value in request.form.items() if key == 'is_update']
+    action = [value for key, value in request.form.items() if key == 'action']
+    print("ALL DATA :", is_update)
     print("STEPS UPDATED :")
+    print("Action:", action)
     print(update_list)
+
+    '''
+    Added for supporting batch update process
+    '''
+
     for i, el in enumerate(update_list):
-        _id = mongo_db_collection.find({"data.Name": el}).__getitem__(0)
-        print(_id, el)
-        upd_field = _id
-        mongo_db_collection.update({"_id": _id["_id"]}, {'$set': {'data.status': update_action[i]}}, upsert=True, multi=False)
+        if action[i] == 'delete':
+            try:
+                delete_entry_by_name(el, mongo_db_collection)
+                continue
+            except Exception as e:
+                return jsonify(status=e)
+        else:
+            _id = mongo_db_collection.find({"data.Name": el}).__getitem__(i)
+            print(_id, el)
+            upd_field = _id
+            mongo_db_collection.update({"_id": _id["_id"]}, {'$set': {'data.status': is_update[i]}}, upsert=True, multi=False)
     print("FINISHED WITH NO ERRORS")
     return jsonify(status="OK")
 
