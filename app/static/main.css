@@ -12,4 +12,15 @@ body {
   background: #a1dd89;
   color: #FFF; }
 
+.delete-record {
+  float: right; }
+
+.hide-list-element {
+  visibility: hidden;
+  display: none; }
+
+.list-element-top-block-span {
+  width: 100px;
+  display: inline-block; }
+
 /*# sourceMappingURL=main.css.map */
