@@ -1,5 +1,4 @@
 $ ->
-
   collapseRecords($(@))
 
   $(".list-element-top-block").click ->
@@ -39,6 +38,20 @@ findAction = (obj) ->
   return 0
 
 collapseRecords = (obj) ->
-  data_list = obj.find('.list-group').each ->
-    console.log @
+  data_list = obj.find('.list-group').children('.userRecord').toArray().forEach(collapseElement)
+  console.log(data_list)
 
+
+#TODO: Please, refactor it later. =(
+collapseElement = (element, index, array) ->
+  if index > 0 and  $(element).attr('data-user') == $(array[index-1]).attr('data-user')
+    if !!$(array[index-1]).attr('is-main') and not !!$(array[index-1]).attr('not-main')
+      $(array[index-1]).attr('data-contain-hidden', parseInt($(array[index-1]).attr('data-contain-hidden'))+1)
+      $(element).attr('not-main','1').attr('is-from', index-1)
+    else if !!$(array[index-1]).attr('not-main')
+      is_from = parseInt($(array[index-1]).attr('is-from'))
+      $(element).attr('not-main','1').attr('is-from', is_from)
+      $(array[is_from]).attr('data-contain-hidden', parseInt($(array[is_from]).attr('data-contain-hidden'))+1)
+  else
+    $(element).attr('is-main','1')
+    $(element).attr('data-contain-hidden', '0')

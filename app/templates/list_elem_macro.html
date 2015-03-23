@@ -31,7 +31,7 @@
                                 <li><a class="set-yes-status" href="#">DONE</a></li>
                               </ul>
                             </div>
-                            {%- if main_div_class == "is-done" -%}
+                            {%- if UserName  != UserNameAbove -%}
                                 <button type="button" class="btn-default show-same-user-vids" data-user="{{UserName}}">Show hidden</button>
                             {% endif %}
                             <button type="button" class="btn-default delete-record"> Delete</button>
