@@ -127,6 +127,11 @@ def logout():
     logout_user()
     return redirect('/')
 
+@app.route('/hiddenTemplate')
+def hidden_template():
+    print(request.form.__dict__)
+    return render_template('hiddenTemplate.html')
+
 
 ###TODO: Add refresh page after AJAX
 @app.route("/update", methods=['POST'])

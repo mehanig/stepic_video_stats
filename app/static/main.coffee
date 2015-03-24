@@ -1,13 +1,13 @@
 $ ->
   collapseRecords($(@))
 
+  $.get('hiddenTemplate').done (data) ->
+    $(e).after(data) for e in $(".userRecord[is_main = '1']")
+
   $(".list-element-top-block").click ->
     $(@).parent(@).find(".list-actions-menu").toggleClass("hidden")
 
   $(".show-same-user-vids").click ->
-#    uid = $(@).attr('data-user')
-#    elements = $(".same-user-list-element[data-user=#{uid}]")
-#    console.log elements.length
     $(".same-user-list-element").toggleClass("hide-list-element")
     $(".same-user-videos-navigation").toggleClass("hide-list-element")
 
@@ -38,14 +38,13 @@ findAction = (obj) ->
   return 0
 
 collapseRecords = (obj) ->
-  data_list = obj.find('.list-group').children('.userRecord').toArray().forEach(collapseElement)
-  console.log(data_list)
+  obj.find('.list-group').children('.userRecord').toArray().forEach(collapseElement)
 
 
 #TODO: Please, refactor it later. =(
 collapseElement = (element, index, array) ->
   if index > 0 and  $(element).attr('data-user') == $(array[index-1]).attr('data-user')
-    if !!$(array[index-1]).attr('is-main') and not !!$(array[index-1]).attr('not-main')
+    if !!$(array[index-1]).attr('is_main') and not !!$(array[index-1]).attr('not-main')
       $(array[index-1]).attr('data-contain-hidden', parseInt($(array[index-1]).attr('data-contain-hidden'))+1)
       $(element).attr('not-main','1').attr('is-from', index-1)
     else if !!$(array[index-1]).attr('not-main')
@@ -53,5 +52,5 @@ collapseElement = (element, index, array) ->
       $(element).attr('not-main','1').attr('is-from', is_from)
       $(array[is_from]).attr('data-contain-hidden', parseInt($(array[is_from]).attr('data-contain-hidden'))+1)
   else
-    $(element).attr('is-main','1')
+    $(element).attr('is_main','1')
     $(element).attr('data-contain-hidden', '0')
