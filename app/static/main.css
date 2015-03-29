@@ -23,4 +23,7 @@ body {
   width: 100px;
   display: inline-block; }
 
+.is-vid-container {
+  float: right; }
+
 /*# sourceMappingURL=main.css.map */

@@ -3,14 +3,34 @@
   var collapseElement, collapseRecords, findAction;
 
   $(function() {
+    var e, _i, _len, _ref;
     collapseRecords($(this));
+    $.get('hiddenTemplate').done(function(data) {
+      var e, _i, _len, _ref, _results;
+      _ref = $(".userRecord[is_main = '1']");
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        e = _ref[_i];
+        if ($(e).attr('data-contain-hidden') !== '0') {
+          _results.push($(e).find(".list-element-top-block").append(data));
+        }
+      }
+      return _results;
+    });
     $(".list-element-top-block").click(function() {
       return $(this).parent(this).find(".list-actions-menu").toggleClass("hidden");
     });
     $(".show-same-user-vids").click(function() {
-      $(".same-user-list-element").toggleClass("hide-list-element");
+      var username;
+      username = $(this).attr('data-user');
+      $(".same-user-list-element[data-user ='" + username + "']").toggleClass("hide-list-element");
       return $(".same-user-videos-navigation").toggleClass("hide-list-element");
     });
+    _ref = $("[data-contain-hidden='0']");
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      e = _ref[_i];
+      $(e).find('.list-actions-menu').remove();
+    }
     return $('.set-yes-status, .set-no-status, .delete-record').click(function() {
       var action, is_update, obj, thisObj, to_hide, to_update;
       obj = $(this).closest(".list-actions-menu").attr("id");
@@ -46,15 +66,13 @@
   };
 
   collapseRecords = function(obj) {
-    var data_list;
-    data_list = obj.find('.list-group').children('.userRecord').toArray().forEach(collapseElement);
-    return console.log(data_list);
+    return obj.find('.list-group').children('.userRecord').toArray().forEach(collapseElement);
   };
 
   collapseElement = function(element, index, array) {
     var is_from;
     if (index > 0 && $(element).attr('data-user') === $(array[index - 1]).attr('data-user')) {
-      if (!!$(array[index - 1]).attr('is-main') && !!!$(array[index - 1]).attr('not-main')) {
+      if (!!$(array[index - 1]).attr('is_main') && !!!$(array[index - 1]).attr('not-main')) {
         $(array[index - 1]).attr('data-contain-hidden', parseInt($(array[index - 1]).attr('data-contain-hidden')) + 1);
         return $(element).attr('not-main', '1').attr('is-from', index - 1);
       } else if (!!$(array[index - 1]).attr('not-main')) {
@@ -63,7 +81,7 @@
         return $(array[is_from]).attr('data-contain-hidden', parseInt($(array[is_from]).attr('data-contain-hidden')) + 1);
       }
     } else {
-      $(element).attr('is-main', '1');
+      $(element).attr('is_main', '1');
       return $(element).attr('data-contain-hidden', '0');
     }
   };

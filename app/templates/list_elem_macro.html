@@ -5,7 +5,7 @@
                     {%- set HideIfSameUser = " same-user-list-element hide-list-element " -%}
                 {% endif %}
                 <div class= "userRecord {{ HideIfSameUser }}" data-user="{{UserName}}" >
-                <h3>
+                <h4>
                     {%- if item["status"] == "1" -%}
                     {%- set main_div_class = "is-done" -%}
                     {% else %}
@@ -17,28 +17,31 @@
                             <span class = "list-element-top-block-span" > {{item['User']}} </span>
                             | {{item['Name']}} , Duration: {{item['Duration']}} sec ,at {{item['Time'] | datetime}}
                             | <span class="video-status"> {{item['status'] | status_info}} </span>
+                            <span class="is-container"></span>
                         </div>
-                        {% if not g.user.is_anonymous() %}
                         <div class="list-actions-menu hidden" id={{item['Name']}}>
                             <hr class="divider">
-                            <span>Change status:</span>
-                            <div class="btn-group">
-                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                {{item['status'] | status_info}} <span class="caret"></span>
-                              </button>
-                              <ul class="dropdown-menu" role="menu" >
-                                <li><a class="set-no-status" href="#">No</a></li>
-                                <li><a class="set-yes-status" href="#">DONE</a></li>
-                              </ul>
-                            </div>
+                            {% if not g.user.is_anonymous() %}
+                                <span>Change status:</span>
+                                <div class="btn-group">
+                                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    {{item['status'] | status_info}} <span class="caret"></span>
+                                  </button>
+                                  <ul class="dropdown-menu" role="menu" >
+                                    <li><a class="set-no-status" href="#">No</a></li>
+                                    <li><a class="set-yes-status" href="#">DONE</a></li>
+                                  </ul>
+                                </div>
+                            {% endif %}
                             {%- if UserName  != UserNameAbove -%}
                                 <button type="button" class="btn-default show-same-user-vids" data-user="{{UserName}}">Show hidden</button>
                             {% endif %}
+                            {% if not g.user.is_anonymous() %}
                             <button type="button" class="btn-default delete-record"> Delete</button>
+                            {% endif %}
                         </div>
-                        {% endif %}
                     </div>
-                </h3>
+                </h4>
                     </div>
 
 

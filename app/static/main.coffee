@@ -2,14 +2,17 @@ $ ->
   collapseRecords($(@))
 
   $.get('hiddenTemplate').done (data) ->
-    $(e).after(data) for e in $(".userRecord[is_main = '1']")
+    $(e).find(".list-element-top-block").append(data) for e in $(".userRecord[is_main = '1']") when $(e).attr('data-contain-hidden') isnt '0'
 
   $(".list-element-top-block").click ->
     $(@).parent(@).find(".list-actions-menu").toggleClass("hidden")
 
   $(".show-same-user-vids").click ->
-    $(".same-user-list-element").toggleClass("hide-list-element")
+    username = ($(@).attr('data-user'))
+    $(".same-user-list-element[data-user ='"+username+"']").toggleClass("hide-list-element")
     $(".same-user-videos-navigation").toggleClass("hide-list-element")
+
+  $(e).find('.list-actions-menu').remove() for e in $("[data-contain-hidden='0']")
 
   $('.set-yes-status, .set-no-status, .delete-record').click ->
     obj = $(@).closest(".list-actions-menu").attr("id")
@@ -30,7 +33,6 @@ $ ->
       error:(response) ->
       data: {name: obj, is_update: +is_update, action:action}
     }
-
 
 findAction = (obj) ->
   if obj.hasClass('delete-record')
