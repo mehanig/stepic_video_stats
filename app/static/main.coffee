@@ -10,13 +10,12 @@ $ ->
   $(".show-same-user-vids").click ->
     username = ($(@).attr('data-user'))
     $(".same-user-list-element[data-user ='"+username+"']").toggleClass("hide-list-element")
-    $(".same-user-videos-navigation").toggleClass("hide-list-element")
+    $(".same-user-videos-navigation[data-user ='"+username+"']").toggleClass("hide-list-element")
 
   $(e).find('.list-actions-menu').remove() for e in $("[data-contain-hidden='0']")
 
   $('.set-yes-status, .set-no-status, .delete-record').click ->
     obj = $(@).closest(".list-actions-menu").attr("id")
-    thisObj = $(@)
     to_update = $(@).closest(".list-group-item").find(".list-element-top-block").find(".video-status")
     is_update = $(@).hasClass("set-yes-status")
     to_hide = $(@).closest(".list-actions-menu")
@@ -34,10 +33,12 @@ $ ->
       data: {name: obj, is_update: +is_update, action:action}
     }
 
+
 findAction = (obj) ->
   if obj.hasClass('delete-record')
     return "delete"
   return 0
+
 
 collapseRecords = (obj) ->
   obj.find('.list-group').children('.userRecord').toArray().forEach(collapseElement)

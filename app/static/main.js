@@ -24,7 +24,7 @@
       var username;
       username = $(this).attr('data-user');
       $(".same-user-list-element[data-user ='" + username + "']").toggleClass("hide-list-element");
-      return $(".same-user-videos-navigation").toggleClass("hide-list-element");
+      return $(".same-user-videos-navigation[data-user ='" + username + "']").toggleClass("hide-list-element");
     });
     _ref = $("[data-contain-hidden='0']");
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -32,9 +32,8 @@
       $(e).find('.list-actions-menu').remove();
     }
     return $('.set-yes-status, .set-no-status, .delete-record').click(function() {
-      var action, is_update, obj, thisObj, to_hide, to_update;
+      var action, is_update, obj, to_hide, to_update;
       obj = $(this).closest(".list-actions-menu").attr("id");
-      thisObj = $(this);
       to_update = $(this).closest(".list-group-item").find(".list-element-top-block").find(".video-status");
       is_update = $(this).hasClass("set-yes-status");
       to_hide = $(this).closest(".list-actions-menu");
